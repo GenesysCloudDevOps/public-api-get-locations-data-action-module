@@ -1,0 +1,59 @@
+{
+  "name": "Get Locations",
+  "integrationType": "purecloud-data-actions",
+  "actionType": "custom",
+  "config": {
+    "request": {
+      "requestUrlTemplate": "/api/v2/locations?pageSize=100&pageNumber=${input.pageNumber}",
+      "requestType": "GET",
+      "headers": {},
+      "requestTemplate": "${input.rawRequest}"
+    },
+    "response": {
+      "translationMap": {
+        "ids": "$.entities..id",
+        "names": "$.entities..name"
+      },
+      "translationMapDefaults": {
+        "ids": "[]",
+        "names": "[]"
+      },
+      "successTemplate": "{ \"locationIds\": ${ids}, \"locationNames\": ${names} }"
+    }
+  },
+  "contract": {
+    "input": {
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "pageNumber": {
+            "default": "1",
+            "type": "integer"
+          }
+        },
+        "additionalProperties": true
+      }
+    },
+    "output": {
+      "successSchema": {
+        "type": "object",
+        "properties": {
+          "locationIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "locationNames": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "additionalProperties": true
+      }
+    }
+  },
+  "secure": false
+}
